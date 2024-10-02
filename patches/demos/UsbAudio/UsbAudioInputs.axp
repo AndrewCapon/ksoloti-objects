@@ -1,0 +1,58 @@
+<patch-1.0 appVersion="1.0.12">
+   <obj type="ksoloti/usb/usb in stereo" uuid="97497df749dd47a19a18f4a78ebc58e6" name="usb_1" x="28" y="28">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="disp/scope 128 b trig" uuid="11747dcd1dc9afe4919f537c861fb18b80b4e4e" name="scope_1" x="196" y="28">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="ksoloti/usb/usb in left" uuid="08b6d401deab4b949f47ce54cee6d79b" name="usb_2" x="378" y="28">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="disp/scope 128 b trig" uuid="11747dcd1dc9afe4919f537c861fb18b80b4e4e" name="scope_3" x="518" y="28">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="disp/scope 128 b trig" uuid="11747dcd1dc9afe4919f537c861fb18b80b4e4e" name="scope_2" x="196" y="224">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="ksoloti/usb/usb in right" uuid="c62e66f990f44fae80831e6cbaff2572" name="usb_3" x="378" y="224">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="disp/scope 128 b trig" uuid="11747dcd1dc9afe4919f537c861fb18b80b4e4e" name="scope_4" x="518" y="224">
+      <params/>
+      <attribs/>
+   </obj>
+   <nets>
+      <net>
+         <source obj="usb_1" outlet="left"/>
+         <dest obj="scope_1" inlet="in"/>
+      </net>
+      <net>
+         <source obj="usb_1" outlet="right"/>
+         <dest obj="scope_2" inlet="in"/>
+      </net>
+      <net>
+         <source obj="usb_2" outlet="wave"/>
+         <dest obj="scope_3" inlet="in"/>
+      </net>
+      <net>
+         <source obj="usb_3" outlet="wave"/>
+         <dest obj="scope_4" inlet="in"/>
+      </net>
+   </nets>
+   <settings>
+      <subpatchmode>no</subpatchmode>
+   </settings>
+   <notes><![CDATA[]]></notes>
+   <windowPos>
+      <x>507</x>
+      <y>183</y>
+      <width>780</width>
+      <height>620</height>
+   </windowPos>
+</patch-1.0>
