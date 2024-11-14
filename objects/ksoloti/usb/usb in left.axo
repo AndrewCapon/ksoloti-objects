@@ -12,6 +12,9 @@
       </displays>
       <params/>
       <attribs/>
+      <includes>
+         <include>EnableUSBAudio.h</include>
+      </includes>
       <code.krate><![CDATA[int j;
 for(j=0;j<BUFSIZE;j++){
    outlet_wave[j] = UsbInputLeft[j];
