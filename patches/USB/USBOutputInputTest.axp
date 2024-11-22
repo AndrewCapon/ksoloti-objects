@@ -1,0 +1,74 @@
+<patch-1.0 appVersion="1.0.12">
+   <obj type="math/*c" uuid="7a66f52a9594e7e9eb31328ea725cb3641a80b55" name="*c_1" x="350" y="14">
+      <params>
+         <frac32.u.map name="amp" value="48.5"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ksoloti/usb/usb out stereo" uuid="f39f2910bf8342d18afd9b09bcf110c9" name="usb_1" x="700" y="84">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="osc/tri cheap" uuid="9d5f09ac82b4951ee329feab93af35896b44e8a6" name="tri_1" x="112" y="112">
+      <params>
+         <frac32.s.map name="pitch" value="-16.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/toggle" uuid="42b8134fa729d54bfc8d62d6ef3fa99498c1de99" name="FREEZE" x="294" y="210">
+      <params>
+         <bool32.tgl name="b" value="0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ksoloti/usb/usb in stereo" uuid="97497df749dd47a19a18f4a78ebc58e6" name="usb_2" x="70" y="238">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="disp/scope 128 b trig" uuid="11747dcd1dc9afe4919f537c861fb18b80b4e4e" name="scope_128s_trig1_" x="266" y="336">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="disp/scope 128 b trig" uuid="11747dcd1dc9afe4919f537c861fb18b80b4e4e" name="scope_128s_trig1" x="532" y="336">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="ksoloti/usb/time waster" uuid="50bb887e2b01468197105d4f872d1106" name="time_1" x="70" y="434">
+      <params>
+         <int32 name="us" value="0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <comment type="patch/comment" x="126" y="546" text="Needs the host computer to echo back left audio input to right audio output."/>
+   <nets>
+      <net>
+         <source obj="*c_1" outlet="out"/>
+         <dest obj="scope_128s_trig1" inlet="in"/>
+         <dest obj="usb_1" inlet="left"/>
+      </net>
+      <net>
+         <source obj="FREEZE" outlet="o"/>
+         <dest obj="scope_128s_trig1" inlet="hold"/>
+         <dest obj="scope_128s_trig1_" inlet="hold"/>
+      </net>
+      <net>
+         <source obj="tri_1" outlet="wave"/>
+         <dest obj="*c_1" inlet="in"/>
+      </net>
+      <net>
+         <source obj="usb_2" outlet="right"/>
+         <dest obj="scope_128s_trig1_" inlet="in"/>
+         <dest obj="usb_1" inlet="right"/>
+      </net>
+   </nets>
+   <settings>
+      <subpatchmode>no</subpatchmode>
+   </settings>
+   <notes><![CDATA[]]></notes>
+   <windowPos>
+      <x>779</x>
+      <y>87</y>
+      <width>890</width>
+      <height>739</height>
+   </windowPos>
+</patch-1.0>
