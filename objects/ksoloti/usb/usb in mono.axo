@@ -1,0 +1,53 @@
+<objdefs>
+   <obj.normal id="usb in mono" uuid="46baef2852a940908dee14deaa4316b2">
+      <sDescription>Usb input, single mono channel</sDescription>
+      <author>Andrew Capon</author>
+      <license>BSD</license>
+      <inlets/>
+      <outlets>
+         <frac32buffer name="wave" description="Left channel"/>
+      </outlets>
+      <displays>
+         <frac32.vu name="vu" noLabel="true"/>
+      </displays>
+      <params/>
+      <attribs>
+         <combo name="channel">
+            <MenuEntries>
+               <string>1/Left</string>
+               <string>2/Right</string>
+               <string>3/Left</string>
+               <string>4/Right</string>
+            </MenuEntries>
+            <CEntries>
+               <string>1</string>
+               <string>2</string>
+               <string>3</string>
+               <string>4</string>
+            </CEntries>
+         </combo>
+      </attribs>
+      <code.krate><![CDATA[int j;
+#if FW_USBAUDIO
+int32_t *source = nullptr;
+
+switch(attr_channel) {
+   case 1 : source = UsbInputLeft; break;
+   case 2 : source = UsbInputRight; break;
+#if USB_AUDIO_CHANNELS == 4
+   case 3 : source = UsbInput2Left; break;
+   case 4 : source = UsbInput2Right; break;
+#endif
+}
+
+if(source) {
+   for(j=0;j<BUFSIZE;j++){
+      outlet_wave[j] = source[j];
+   }
+}
+
+disp_vu=outlet_wave[0];
+#endif
+]]></code.krate>
+   </obj.normal>
+</objdefs>

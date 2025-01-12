@@ -1,0 +1,38 @@
+<objdefs>
+   <obj.normal id="usb in quad" uuid="9baf3860bd0a4915992b5cbea8b26c64">
+      <sDescription>Usb input, 4 channels</sDescription>
+      <author>Andrew Capon</author>
+      <license>BSD</license>
+      <inlets/>
+      <outlets>
+         <frac32buffer name="ch1" description="Channel 1/Left"/>
+         <frac32buffer name="ch2" description="Channel 2/Right"/>
+         <frac32buffer name="ch3" description="Channel 3/Left"/>
+         <frac32buffer name="ch4" description="Channel 4/Right"/>
+      </outlets>
+      <displays>
+         <frac32.vu name="vuChannel1"/>
+         <frac32.vu name="vuChannel2"/>
+         <frac32.vu name="vuChannel3"/>
+         <frac32.vu name="vuChannel4"/>
+      </displays>
+      <params/>
+      <attribs/>
+      <code.krate><![CDATA[int j;
+#if FW_USBAUDIO
+
+for(j=0;j<BUFSIZE;j++){
+   outlet_ch1[j] = UsbInputLeft[j];
+   outlet_ch2[j] = UsbInputRight[j];
+   outlet_ch3[j] = UsbInput2Left[j];
+   outlet_ch4[j] = UsbInput2Right[j];
+}
+
+disp_vuChannel1=outlet_ch1[0];
+disp_vuChannel2=outlet_ch2[0];
+disp_vuChannel1=outlet_ch3[0];
+disp_vuChannel2=outlet_ch4[0];
+#endif
+]]></code.krate>
+   </obj.normal>
+</objdefs>

@@ -1,0 +1,38 @@
+<objdefs>
+   <obj.normal id="usb out quad" uuid="eb3117727a8b4b629bf0e7a935d90424">
+      <sDescription>Usb output, 4 channels</sDescription>
+      <author>Andrew Capon</author>
+      <license>BSD</license>
+      <inlets>
+         <frac32buffer name="ch1" description="Channel 1/Left"/>
+         <frac32buffer name="ch2" description="Channel 2/Right"/>
+         <frac32buffer name="ch3" description="Channel 3/Left"/>
+         <frac32buffer name="ch4" description="Channel 4/Right"/>
+      </inlets>
+      <outlets/>
+      <displays>
+         <frac32.vu name="vuChannel1"/>
+         <frac32.vu name="vuChannel2"/>
+         <frac32.vu name="vuChannel3"/>
+         <frac32.vu name="vuChannel4"/>
+      </displays>
+      <params/>
+      <attribs/>
+      <code.krate><![CDATA[int j;
+#if FW_USBAUDIO
+
+for(j=0;j<BUFSIZE;j++){
+   UsbOutputLeft[j]  += __SSAT(inlet_ch1[j],28);
+   UsbOutputRight[j] += __SSAT(inlet_ch2[j],28);
+   UsbOutput2Left[j]  += __SSAT(inlet_ch3[j],28);
+   UsbOutput2Right[j] += __SSAT(inlet_ch4[j],28);
+}
+
+disp_vuChannel1=inlet_ch1[0];
+disp_vuChannel2=inlet_ch2[0];
+disp_vuChannel1=inlet_ch3[0];
+disp_vuChannel2=inlet_ch4[0];
+#endif
+]]></code.krate>
+   </obj.normal>
+</objdefs>

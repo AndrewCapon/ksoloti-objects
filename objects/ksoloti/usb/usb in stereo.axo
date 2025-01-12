@@ -13,14 +13,41 @@
          <frac32.vu name="vuRight"/>
       </displays>
       <params/>
-      <attribs/>
+      <attribs>
+         <combo name="channelPair">
+            <MenuEntries>
+               <string>1/2</string>
+               <string>3/4</string>
+            </MenuEntries>
+            <CEntries>
+               <string>1</string>
+               <string>2</string>
+            </CEntries>
+         </combo>
+      </attribs>
       <code.krate><![CDATA[int j;
-for(j=0;j<BUFSIZE;j++){
-   outlet_left[j] = UsbInputLeft[j];
-   outlet_right[j] = UsbInputRight[j];
+#if FW_USBAUDIO
+
+int32_t *sourceL = nullptr;
+int32_t *sourceR = nullptr;
+
+switch(attr_channelPair) {
+   case 1 : sourceL = UsbInputLeft; sourceR = UsbInputRight; break;
+#if USB_AUDIO_CHANNELS == 4
+   case 2 : sourceL = UsbInput2Left; sourceR = UsbInput2Right; break;
+#endif
 }
+
+if(sourceL && sourceR) {
+   for(j=0;j<BUFSIZE;j++){
+      outlet_left[j] = sourceL[j];
+      outlet_right[j] = sourceR[j];
+   }
+}
+
 disp_vuLeft=outlet_left[0];
 disp_vuRight=outlet_right[0];
+#endif
 ]]></code.krate>
    </obj.normal>
 </objdefs>
