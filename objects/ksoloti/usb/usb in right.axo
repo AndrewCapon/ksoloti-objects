@@ -13,10 +13,12 @@
       <params/>
       <attribs/>
       <code.krate><![CDATA[int j;
+#if FW_USBAUDIO      
 for(j=0;j<BUFSIZE;j++){
    outlet_wave[j] = UsbInputRight[j];
 }
 disp_vu=outlet_wave[0];
+#endif
 ]]></code.krate>
    </obj.normal>
 </objdefs>
