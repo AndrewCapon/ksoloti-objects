@@ -1,0 +1,109 @@
+<objdefs>
+   <obj.normal id="line 3 loop" uuid="2ef3c9b4af30c9e78e4e0ecaba15e172aaba9399" sha="a79a080b6a30e999acb3fafb398ba930a5e7f436">
+      <upgradeSha>d36239728ce4bfb9acaa445cc70cbe063457b187</upgradeSha>
+      <sDescription>Three piecewise linear ramps, extended range, with loop on/off inlet.</sDescription>
+      <author>Johannes Taelman, Ksoloti</author>
+      <license>BSD</license>
+            <inlets>
+         <bool32.risingfalling name="gate" description="If loop is off, trigger once. If loop is on, trigger and loop as long as gate is high, decay/release otherwise."/>
+         <bool32.risingfalling name="loop" description="&lt;html&gt;Loop on/off.&lt;br&gt;While loop is on and gate is high, the envelope will loop back and forth between&lt;br&gt;level2 and level3, with the rate set by timeC, essentially creating a triangle shape.&lt;br&gt;If either gate or loop go low during the loop cycle, the envelope finishes its cycle and stops at level3."/>
+      </inlets>
+      <outlets>
+         <frac32.positive name="out" description="output"/>
+         <int32.positive name="phase" description="phase index"/>
+      </outlets>
+      <displays/>
+      <params>
+         <frac32.u.map name="level0"/>
+         <frac32.s.map.klineartime.exp name="timeA" description="time A (level0 to level1)"/>
+         <frac32.u.map name="level1"/>
+         <frac32.s.map.klineartime.exp name="timeB" description="time B (level1 to level2)"/>
+         <frac32.u.map name="level2"/>
+         <frac32.s.map.klineartime.exp name="timeC" description="time C (level2 to level3)"/>
+         <frac32.u.map name="level3"/>
+      </params>
+      <attribs/>
+      <code.declaration><![CDATA[int32_t val;
+int32_t time1;
+int32_t phase1;
+int32_t ntrig;
+]]></code.declaration>
+      <code.init><![CDATA[phase1 = 0;
+val = 0;
+ntrig = 0;
+]]></code.init>
+      <code.krate><![CDATA[
+if (inlet_gate && !ntrig) {
+    time1 = 0;
+    phase1 = 1;
+    val = param_level0;
+    ntrig = 1;
+}
+else if (phase1 == 1) {
+    int32_t t;
+    MTOF(-param_timeA, t);
+    time1 += (t >> 2);
+    if (time1 >= 0) {
+        val = param_level0 + (___SMMUL(param_level1 - param_level0, time1) << 1);
+    }
+    else {
+        phase1 = 2;
+        val = param_level1;
+        time1 = 0;
+    }
+}
+else if (phase1 == 2) {
+    int32_t t;
+    MTOF(-param_timeB, t);
+    time1 += (t >> 2);
+    if (time1 >= 0) {
+        val = param_level1 + (___SMMUL(param_level2 - param_level1, time1) << 1);
+    }
+    else {
+        phase1 = 3;
+        val = param_level2;
+        time1 = 0;
+    }
+}
+else if (phase1 == 3) {
+    int32_t t;
+    MTOF(-param_timeC, t);
+    time1 += (t >> 2);
+    if (time1 >= 0) {
+        val = param_level2 + (___SMMUL(param_level3 - param_level2, time1) << 1);
+    }
+    else {
+        if (inlet_loop && inlet_gate) {
+            phase1 = 4;
+            time1 = 0;
+        }
+        else {
+            phase1 = 0;
+        }
+        val = param_level3;
+    }
+}
+else if (phase1 == 4) {
+    int32_t t;
+    MTOF(-param_timeC, t);
+    time1 += (t >> 2);
+    if (time1 >= 0) {
+        val = param_level3 + (___SMMUL(param_level2 - param_level3, time1) << 1);
+    }
+    else {
+        phase1 = 3;
+        val = param_level3;
+        time1 = 0;
+    }
+}
+
+if (!inlet_gate) {
+    ntrig = 0;
+}
+
+outlet_out = val;
+outlet_phase = phase1;
+
+]]></code.krate>
+   </obj.normal>
+</objdefs>
